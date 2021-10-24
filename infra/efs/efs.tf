@@ -7,13 +7,26 @@ resource "aws_efs_file_system" "fs" {
     transition_to_ia = "AFTER_30_DAYS"
   }
 
-  tags = var.tags
+  tags = merge(var.tags,
+    { "Name" : "${var.project}-${var.env}-efs" }
+  )
 }
 
 resource "aws_efs_access_point" "fs" {
   file_system_id = aws_efs_file_system.fs.id
 
-  tags = var.tags
+  root_directory {
+    path = "/"
+
+    creation_info {
+      permissions = "0755"
+      owner_gid   = 1001
+      owner_uid   = 1001
+    }
+  }
+  tags = merge(var.tags,
+    { "Name" : "${var.project}-${var.env}-access-point" }
+  )
 }
 
 resource "aws_efs_mount_target" "fs" {

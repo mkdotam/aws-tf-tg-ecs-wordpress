@@ -7,6 +7,7 @@ module "rds" {
   engine_mode       = "serverless"
   engine_version    = "5.7"
   storage_encrypted = true
+  database_name     = replace("${var.project}_${var.env}", "-", "_")
 
   vpc_id                = var.vpc_id
   subnets               = var.database_subnets

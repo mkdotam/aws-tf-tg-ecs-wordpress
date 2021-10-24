@@ -20,8 +20,10 @@ dependency "efs" {
   config_path = "../efs"
 
   mock_outputs = {
-    efs_id              = "mock"
-    efs_access_point_id = "mock"
+    efs_id               = "fs-xxxxxx"
+    efs_arn              = "arn:aws::::file-system/fs-xxxxxx"
+    efs_access_point_id  = "fsap-xxxxxxxxxxxxx"
+    efs_access_point_arn = "arn:aws::::access-point/fsap-xxxxxxxxxxxxx"
   }
   mock_outputs_allowed_terraform_commands = ["validate", "plan", "output", "init", "destroy"]
 
@@ -61,8 +63,10 @@ inputs = {
   public_cidr_blocks  = dependency.vpc.outputs.public_cidr_blocks
 
   # efs
-  efs_id              = dependency.efs.outputs.efs_id
-  efs_access_point_id = dependency.efs.outputs.efs_access_point_id
+  efs_id               = dependency.efs.outputs.efs_id
+  efs_arn              = dependency.efs.outputs.efs_arn
+  efs_access_point_arn = dependency.efs.outputs.efs_access_point_arn
+  efs_access_point_id  = dependency.efs.outputs.efs_access_point_id
 
   # alb
   alb_dns_name               = dependency.alb.outputs.alb_dns_name

@@ -89,21 +89,21 @@ resource "aws_ecs_task_definition" "task" {
         {
           "name" : "WORDPRESS_DB_PASSWORD",
           "valueFrom" : "${var.db_secrets_arn}:password::"
+        },
+        {
+          "name" : "WORDPRESS_DB_NAME",
+          "valueFrom" : "${var.db_secrets_arn}:database::"
         }
       ],
       environment : [
         {
-          "name" : "WORDPRESS_DB_NAME",
-          "value" : var.project
-        },
-        {
           "name" : "WORDPRESS_TABLE_PREFIX",
           "value" : "wp"
         },
-#        {
-#          "name" : "url",
-#          "value" : "http://${var.alb_dns_name}/"
-#        }
+        {
+          "name" : "WP_CONTENT_DIR",
+          "value" : "/var/www/html/wp-content/"
+        }
       ],
       logConfiguration : {
         "logDriver" : "awslogs",
@@ -112,11 +112,11 @@ resource "aws_ecs_task_definition" "task" {
           "awslogs-region" : var.region,
           "awslogs-stream-prefix" : "ecs"
         }
-      }
+      },
       mountPoints : [
         {
           "sourceVolume" : "${var.project}-service-storage",
-          "containerPath" : "/var/content",
+          "containerPath" : "/var/www/html/wp-content/",
           "readOnly" : false
         }
       ]
@@ -127,8 +127,14 @@ resource "aws_ecs_task_definition" "task" {
     name = "${var.project}-service-storage"
 
     efs_volume_configuration {
-      file_system_id     = var.efs_id
-      transit_encryption = "ENABLED"
+      file_system_id          = var.efs_id
+      root_directory          = "/"
+      transit_encryption      = "ENABLED"
+      transit_encryption_port = 2999
+      authorization_config {
+        access_point_id = var.efs_access_point_id
+        iam             = "ENABLED"
+      }
     }
   }
 

@@ -5,6 +5,7 @@ locals {
     "host"                 = module.rds.rds_cluster_endpoint,
     "port"                 = module.rds.rds_cluster_port,
     "username"             = module.rds.rds_cluster_master_username,
+    "database"             = module.rds.rds_cluster_database_name,
     "password"             = module.rds.rds_cluster_master_password,
     "engine"               = module.rds.rds_cluster_engine_version,
     "dbClusterIdentifier"  = module.rds.rds_cluster_id,
@@ -13,7 +14,7 @@ locals {
 }
 
 resource "aws_secretsmanager_secret" "db_secrets" {
-  name        = "rds-db-credentials/${module.rds.rds_cluster_resource_id}"
+  name        = "${var.env}/rds-db-credentials/${module.rds.rds_cluster_resource_id}"
   description = "Secrets to connect to RDS Aurora"
   tags        = var.tags
 }

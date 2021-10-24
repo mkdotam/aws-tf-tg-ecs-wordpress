@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "ecs_task_exec" {
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
-      "logs:DescribeLogStreams",
+      "logs:DescribeLogStreams"
     ]
 
     resources = [
@@ -68,6 +68,34 @@ data "aws_iam_policy_document" "ecs_task_exec" {
 
     effect = "Allow"
   }
+}
+
+
+resource "aws_iam_policy" "efs" {
+  name        = "${var.project}-task-policy-efs"
+  description = "Policy that allows working with EFS"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AccessToEFS",
+            "Effect": "Allow",
+            "Action": [
+                "elasticfilesystem:ClientMount",
+                "elasticfilesystem:ClientWrite"
+            ],
+            "Resource": "${var.efs_arn}",
+            "Condition": {
+                "StringEquals": {
+                    "elasticfilesystem:AccessPointArn": "${var.efs_access_point_arn}"
+                }
+            }
+        }
+    ]
+}
+EOF
 }
 
 resource "aws_iam_policy" "secrets" {
@@ -94,4 +122,9 @@ EOF
 resource "aws_iam_role_policy_attachment" "ecs-task-exec-role-policy-attachment-for-secrets" {
   role       = aws_iam_role.ecs_task_exec.name
   policy_arn = aws_iam_policy.secrets.arn
+}
+
+resource "aws_iam_role_policy_attachment" "ecs-task-exec-role-policy-attachment-for-efs" {
+  role       = aws_iam_role.ecs_task_exec.name
+  policy_arn = aws_iam_policy.efs.arn
 }

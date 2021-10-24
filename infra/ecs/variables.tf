@@ -62,6 +62,14 @@ variable "efs_id" {
   type = string
 }
 
+variable "efs_arn" {
+  type = string
+}
+
+variable "efs_access_point_arn" {
+  type = string
+}
+
 variable "efs_access_point_id" {
   type = string
 }

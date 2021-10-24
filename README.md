@@ -1,5 +1,6 @@
 # AWS ECS/Fargate + RDS/Serverless
 
+This project is inspired by Udemy Course ["Amazon ECS & Fargate Master Class" by Stephane Maarek & Gerd König](https://www.udemy.com/course/aws-ecs-fargate/).    
 
 ## Architecture
 
