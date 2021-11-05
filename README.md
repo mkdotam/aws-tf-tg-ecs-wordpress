@@ -1,6 +1,6 @@
 # AWS ECS/Fargate + RDS/Serverless
 
-This project is inspired by Udemy Course ["Amazon ECS & Fargate Master Class" by Stephane Maarek & Gerd König](https://www.udemy.com/course/aws-ecs-fargate/).    
+This project is inspired by Udemy Course ["Amazon ECS & Fargate Master Class" by Stephane Maarek & Gerd König](https://www.udemy.com/course/aws-ecs-fargate/). 
 
 ## Architecture
 
@@ -23,6 +23,8 @@ Database would be spinned up in dedicated database subnet, which will allow traf
 Database credentials would be generated automatically and stored in Secrets Manager, and shared with ECS task and Lambda in a secure way. 
 
 ## Deployment
+
+‼️ If you will deploy this project expect that some charges from AWS can occur: NAT Gateway, ECS tasks and RDS database.
 
 ### Prerequisites
 
@@ -94,10 +96,8 @@ Following AWS Services would be created:
 * Lambda
 
 ---
-TODO:
-- Tighten Security Groups, to allow traffic from respective Security Groups.
-- Review IAM roles.
-- Create CloudWatch Dashboards and Alerts, setup SNS to deliver alerts to email.  
-- EFS is mounted to ECS task, but is not properly used by the Wordpress application.
+Further Improvements:
+- Review IAM roles and tighten Security Groups, to allow traffic only from respective Security Groups.
+- Create CloudWatch Dashboards and Alerts, setup SNS to deliver alerts to email.
 ---
 Enjoy & have fun!
